@@ -14,6 +14,12 @@ class GraphEditor {
     this.#addEventListeners();
   }
 
+  dispose() {
+    this.graph.dispose();
+    this.selected = null;
+    this.hovered = null;
+  }
+
   #addEventListeners() {
     this.canvas.addEventListener(
       "mousedown",
@@ -55,7 +61,7 @@ class GraphEditor {
   }
 
   #mouseMoveHandler(e) {
-    this.mouse = this.viewport.getMouse(e);
+    this.mouse = this.viewport.getMouse(e, true);
     this.hovered = getNearestPoint(
       this.mouse,
       this.graph.points,

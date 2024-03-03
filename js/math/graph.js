@@ -4,6 +4,18 @@ class Graph {
     this.segments = segments;
   }
 
+  static load(info) {
+    const points = info.points.map((i) => new Point(i.x, i.y));
+    const segments = info.segments.map(
+      (i) =>
+        new Segment(
+          points.find((p) => p.equals(i.p1)),
+          points.find((p) => p.equals(i.p2))
+        )
+    );
+    return new Graph(points, segments);
+  }
+
   addPoint(point) {
     this.points.push(point);
   }
@@ -41,26 +53,26 @@ class Graph {
   }
 
   getSegmentsWithPoint(point) {
-    const segments = []
+    const segments = [];
     for (const seg of this.segments) {
-        if (seg.includes(point)) {
-            segments.push(seg)
-        }
+      if (seg.includes(point)) {
+        segments.push(seg);
+      }
     }
-    return segments
+    return segments;
   }
 
   removePoint(point) {
-    const segments = this.getSegmentsWithPoint(point)
+    const segments = this.getSegmentsWithPoint(point);
     for (const segment of segments) {
-        this.removeSegment(segment)
+      this.removeSegment(segment);
     }
     this.points.splice(this.points.indexOf(point), 1);
   }
 
   dispose() {
-    this.points.length = 0
-    this.segments.length = 0
+    this.points.length = 0;
+    this.segments.length = 0;
   }
 
   draw(ctx) {
