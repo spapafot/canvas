@@ -10,8 +10,8 @@
     <h1>World Editor</h1>
     <canvas id="mainCanvas"></canvas>
     <div id="controls">
-      <button onclick="dispose()">Clear</button>
-      <button onclick="save()">Save</button>
+      <button onclick="dispose()">🗑️</button>
+      <button onclick="save()">💾</button>
     </div>
 
     <script src="js/viewport.js"></script>
@@ -20,55 +20,10 @@
     <script src="js/math/utils.js"></script>
     <script src="js/primitives/point.js"></script>
     <script src="js/primitives/segment.js"></script>
+    <script src="js/primitives/polygon.js"></script>
+    <script src="js/primitives/envelope.js"></script>
 
     <script>
-      function addRandomPoint() {
-        graph.tryAddPoint(
-          new Point(
-            Math.random() * mainCanvas.width,
-            Math.random() * mainCanvas.height
-          )
-        );
-        ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        graph.draw(ctx);
-      }
-
-      function addRandomSegment() {
-        index1 = Math.floor(Math.random() * graph.points.length);
-        index2 = Math.floor(Math.random() * graph.points.length);
-        graph.tryAddSegment(
-          new Segment(graph.points[index1], graph.points[index2])
-        );
-        ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        graph.draw(ctx);
-      }
-
-      function removeRandomSegment() {
-        if (graph.segments.length == 0) {
-          return;
-        }
-        index = Math.floor(Math.random() * graph.segments.length);
-        graph.removeSegment(graph.segments[index]);
-        ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        graph.draw(ctx);
-      }
-
-      function removeRandomPoint() {
-        if (graph.points.length == 0) {
-          return;
-        }
-        index = Math.floor(Math.random() * graph.points.length);
-        graph.removePoint(graph.points[index]);
-        ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        graph.draw(ctx);
-      }
-
-      function removeAll() {
-        graph.dispose();
-        ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-        graph.draw(ctx);
-      }
-
       mainCanvas.height = 600;
       mainCanvas.width = 600;
       const ctx = mainCanvas.getContext("2d");
@@ -86,6 +41,7 @@
       function animate() {
         viewport.reset();
         graphEditor.display();
+        new Envelope(graph.segments[0], 200, 20).draw(ctx);
         requestAnimationFrame(animate);
       }
 
